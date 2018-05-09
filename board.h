@@ -3,66 +3,94 @@
 
 #include "figure.h"
 #include "move.h"
+#include "field.h"
 #include <map>
 
-typedef map<string, Figure> Board;
+int signum(int x){
+    if (x > 0) return 1;
+    else if (x < 0) return -1;
+    else return 0;
+}
+
+typedef map<Field, Figure> Board;
 
 Board chessBoard = {
-    {"a1", Figure('r', 'w')},
-    {"b1", Figure('n', 'w')},
-    {"c1", Figure('b', 'w')},
-    {"e1", Figure('k', 'w')},
-    {"f1", Figure('b', 'w')},
-    {"d1", Figure('q', 'w')},
-    {"g1", Figure('n', 'w')},
-    {"h1", Figure('r', 'w')},    
-    {"a2", Figure('p', 'w')},
-    {"b2", Figure('p', 'w')},
-    {"c2", Figure('p', 'w')},
-    {"d2", Figure('p', 'w')},
-    {"e2", Figure('p', 'w')},
-    {"f2", Figure('p', 'w')},
-    {"h2", Figure('p', 'w')},
-    {"g2", Figure('p', 'w')},
-    {"a8", Figure('r', 'b')},
-    {"b8", Figure('n', 'b')},
-    {"c8", Figure('b', 'b')},   
-    {"d8", Figure('q', 'b')},
-    {"e8", Figure('k', 'b')},
-    {"f8", Figure('b', 'b')},
-    {"g8", Figure('n', 'b')},
-    {"h8", Figure('r', 'b')},    
-    {"a7", Figure('p', 'b')},
-    {"b7", Figure('p', 'b')},
-    {"c7", Figure('p', 'b')},
-    {"d7", Figure('p', 'b')},
-    {"e7", Figure('p', 'b')},
-    {"f7", Figure('p', 'b')},
-    {"g7", Figure('p', 'b')},
-    {"h7", Figure('p', 'b')},
+    {Field("a1"), Figure('r', 'w')},
+    {Field("b1"), Figure('n', 'w')},
+    {Field("c1"), Figure('b', 'w')},
+    {Field("e1"), Figure('k', 'w')},
+    {Field("f1"), Figure('b', 'w')},
+    {Field("d1"), Figure('q', 'w')},
+    {Field("g1"), Figure('n', 'w')},
+    {Field("h1"), Figure('r', 'w')},    
+    {Field("a2"), Figure('p', 'w')},
+    {Field("b2"), Figure('p', 'w')},
+    {Field("c2"), Figure('p', 'w')},
+    {Field("d2"), Figure('p', 'w')},
+    {Field("e2"), Figure('p', 'w')},
+    {Field("f2"), Figure('p', 'w')},
+    {Field("g2"), Figure('p', 'w')},
+    {Field("h2"), Figure('p', 'w')},
+    {Field("a8"), Figure('r', 'b')},
+    {Field("b8"), Figure('n', 'b')},
+    {Field("c8"), Figure('b', 'b')},   
+    {Field("d8"), Figure('q', 'b')},
+    {Field("e8"), Figure('k', 'b')},
+    {Field("f8"), Figure('b', 'b')},
+    {Field("g8"), Figure('n', 'b')},
+    {Field("h8"), Figure('r', 'b')},    
+    {Field("a7"), Figure('p', 'b')},
+    {Field("b7"), Figure('p', 'b')},
+    {Field("c7"), Figure('p', 'b')},
+    {Field("d7"), Figure('p', 'b')},
+    {Field("e7"), Figure('p', 'b')},
+    {Field("f7"), Figure('p', 'b')},
+    {Field("g7"), Figure('p', 'b')},
+    {Field("h7"), Figure('p', 'b')},
 };
 
-void updateBoard(Board* board, Move move) {
-    try{
-        if (board->find(move.from) == board->end()) {
-            throw 1;
-        } else if (board->find(move.to) != board->end() && board->find(move.to)->second.getColor() == board->find(move.from)->second.getColor()) {
-            throw 2;
-        } else {
-            auto it = board->find(move.from);
-            board->erase(board->find(move.to));
-            board->insert(pair <string, Figure> (move.to, it->second));
-            board->erase(it);
+bool isValidMove(Move move, Board* board) {
+    if (board->find(move.from) == board->end()) {
+        cout << "No figure present on the chess board at Field " << move.from.position() << endl;
+        return false;
+    } else if (!isValidFigureMove(board->find(move.from)->second, move)) {
+        cout << "Sorry invalid figure move\n";
+        return false;
+    } else if (board->find(move.to) != board->end() && board->find(move.to)->second.getColor() == board->find(move.from)->second.getColor()) {
+        cout << "Trying to capture your own color, sorry not allowed\n";
+        return false;
+    } else {
+        figuretype figtype = board->find(move.from)->second.getType();
+        figurecolor figcolor = board->find(move.from)->second.getColor();
+        int row_it = signum(move.to.row-move.from.row), col_it = signum(move.to.col-move.from.col);
+        Field temp = Field(move.from.col+col_it, move.from.row+row_it);
+        bool check = true;
+        switch (figtype)
+        {
+            case 'n' :
+                break;
+            default :
+                while (temp != move.to) {
+                    if (board->find(temp) != board->end()){
+                        check = false;
+                        break;
+                    }
+                    temp.col = temp.col + col_it;
+                    temp.row = temp.row + row_it;
+                }     
         }
+        if (!check) cout << "Road blocked, can't make this move\n";
+        return check;
     }
-    catch (int i) {
-        switch (i) {
-            case 1 :
-                cout << "Source field " << move.from << " is empty\n";
-                exit (EXIT_FAILURE);
-            case 2 :
-                cout << "Destination field " << move.to << " has same color as source field " << move.from << endl;
-        }
+}
+
+void updateBoard(Board* board, Move move) {
+    if (!isValidMove(move, board)){
+    } else {
+        auto it = board->find(move.from);
+        board->erase(board->find(move.to));
+        board->insert(pair <Field, Figure> (move.to, it->second));
+        board->erase(it);
     }
     return;
 }

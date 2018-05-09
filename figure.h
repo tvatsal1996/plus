@@ -9,6 +9,7 @@ class Figure {
     figuretype type;
     figurecolor color;
     public :
+    Figure() {}
     Figure(figuretype figtype, figurecolor figcolor) {
         type = figtype;
         color = figcolor;
@@ -26,6 +27,10 @@ class Figure {
     }
     figurecolor getColor() {
         return color;
+    }
+    bool operator ==(const Figure &rhs) const
+    {
+        return type == rhs.type && color == rhs.color;
     }
 };
 
