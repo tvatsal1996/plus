@@ -16,6 +16,7 @@
         "unordered_set": "cpp",
         "locale": "cpp",
         "random": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "utility": "cpp"
     }
 }

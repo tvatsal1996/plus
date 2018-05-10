@@ -30,13 +30,18 @@ class Field {
     Field(string info) {
         try
         {
-            if(info.length() != 2) {
+            if(info.length() != 2 && info.length() != 0) {
                 throw 3;
             } else {
-                row = info[1]-'0';
-                col = info[0]-'a'+1;
-                if (row < 1 || row > 8 || col < 1 || col > 8) {
-                    throw 4;
+                if (info.length() == 2){
+                    row = info[1]-'0';
+                    col = info[0]-'a'+1;
+                    if (row < 1 || row > 8 || col < 1 || col > 8) {
+                        throw 4;
+                    }
+                } else {
+                    row = 0;
+                    col = 0;
                 }
             }
         }
@@ -80,6 +85,13 @@ class Field {
         str = str + column + rowno;
         return str;
     }
+    int rank() {
+        return 2 * min(col, 9-col)  * min(row, 9-row);
+    }
 };
+
+int fieldRank(const Field field){
+    return 2 * min(field.col, 9-field.col) * min(field.row, 9-field.row);
+}
 
 #endif

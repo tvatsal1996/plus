@@ -32,6 +32,30 @@ class Figure {
     {
         return type == rhs.type && color == rhs.color;
     }
+    int rank(){
+        switch (type)
+        {
+            case 'q' :
+                return 900;
+                break;
+            case 'r' :
+                return 450;
+                break;
+            case 'b' :
+                return 300;
+                break;
+            case 'n' :
+                return 300;
+                break;
+            case 'p' :
+                return 50;
+                break;
+            default :
+                return 0;
+                break;
+            
+        }
+    } 
 };
 
 #endif
