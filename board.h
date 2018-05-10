@@ -84,11 +84,41 @@ bool isValidMove(Move move, Board* board) {
     }
 }
 
+void showBoard(Board* board){
+    cout << endl;
+    cout << "\t\t";
+    for (int i = 0; i<8; i++){
+        cout << (char)('a'+i) << "\t";
+    }
+    cout << "\n\n";
+    for (int row = 8; row>0; row--){
+        cout << "\t" << row << "\t";
+        for (int col = 1; col<9; col++){
+            auto it = board->find(Field(col, row));
+            if ( (it == board->end())){
+                cout << "-" << "\t";
+            } else {
+                cout << (char)(it->second.getType() - (it->second.getColor() == 'b' ? 0 : 32)) << "\t";
+            }
+        }
+        cout << row;
+        cout << "\n\n";
+    }
+    cout << "\t\t";
+    for (int i = 0; i<8; i++){
+        cout << (char)('a'+i) << "\t";
+    }
+    cout << "\n\n";
+    return;
+}
+
 void updateBoard(Board* board, Move move) {
     if (!isValidMove(move, board)){
     } else {
         auto it = board->find(move.from);
-        board->erase(board->find(move.to));
+        if (board->find(move.to) != board->end()){
+            board->erase(board->find(move.to));
+        }
         board->insert(pair <Field, Figure> (move.to, it->second));
         board->erase(it);
     }

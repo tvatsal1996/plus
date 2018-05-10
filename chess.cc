@@ -7,6 +7,18 @@ using namespace std;
 #include "move.h"
 
 int main() {
-    updateBoard (&chessBoard, Move(Field("a1"), Field("a9"), false));
+    string str;
+    Move move;
+    while(1) {
+        cout << "Enter source field : ";
+        cin >> str;
+        move.from = Field(str);
+        cout << "Enter destination field : ";
+        cin >> str;
+        move.to = Field(str);
+        updateBoard(&chessBoard, move);
+        showBoard(&chessBoard);
+    }
+    // showBoard(&chessBoard);
     return 0;
 }
