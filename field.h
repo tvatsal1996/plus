@@ -88,6 +88,9 @@ class Field {
     int rank() {
         return 2 * min(col, 9-col)  * min(row, 9-row);
     }
+    bool isValidField() {
+        return 1 <= row && row <= 8 && 1 <= col && col <= 8;
+    }
 };
 
 int fieldRank(const Field field){
