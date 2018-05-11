@@ -157,14 +157,14 @@ vector<Move> getGames(Board board, const Field field, figuretype type, figurecol
     return movesList;
 }
 
-// Game Game::updateGame(Move move){
-//     Board newBoard = *board;
-//     updateBoard(&newBoard, move);
-//     // showBoard(&newBoard);
-//     Game retgame = Game(&newBoard, move, other(color), status);
-//     // showBoard(retgame.getBoard());
-//     return retgame;
-// }
+Game Game::updateGame(Move move){
+    Board newBoard = board;
+    updateBoard(&newBoard, move);
+    // showBoard(&newBoard);
+    Game retgame = Game(newBoard, move, other(color), status);
+    // showBoard(retgame.getBoard());
+    return retgame;
+}
 
 vector<Game> Game::nextGames(){
     vector<Game> nextgames;
@@ -178,10 +178,11 @@ vector<Game> Game::nextGames(){
             // Game updatedgame;
             nextmoves = getGames(board, field, type, color);
             for (int i = 0; i<nextmoves.size(); i++){
-                Board newBoard = board;
-                updateBoard(&newBoard, nextmoves[i]);
-                Game updatedgame = Game(newBoard, nextmoves[i], other(color), status);
+                // Board newBoard = board;
+                // updateBoard(&newBoard, nextmoves[i]);
+                // Game updatedgame = Game(newBoard, nextmoves[i], other(color), status);
                 // showBoard(updatedgame.getBoard());
+                Game updatedgame = this->updateGame(nextmoves[i]);
                 nextgames.push_back(updatedgame);
             }
         }

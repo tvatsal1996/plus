@@ -58,4 +58,11 @@ class Figure {
     } 
 };
 
+figurecolor other(figurecolor color){
+    if (color == 'w')
+        return 'b';
+    else
+        return 'w';
+}
+
 #endif

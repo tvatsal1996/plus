@@ -28,55 +28,12 @@ class Field {
     }
     Field () {}
     Field(string info) {
-        try
-        {
-            if(info.length() != 2 && info.length() != 0) {
-                throw 3;
-            } else {
-                if (info.length() == 2){
-                    row = info[1]-'0';
-                    col = info[0]-'a'+1;
-                    if (row < 1 || row > 8 || col < 1 || col > 8) {
-                        throw 4;
-                    }
-                } else {
-                    row = 0;
-                    col = 0;
-                }
-            }
-        }
-        catch(int i) {
-            switch (i) {
-                case 3 : 
-                    cout << "Invalid argument\n";
-                    exit (EXIT_FAILURE);
-                    break;
-                case 4 :
-                    cout << "Invalid Field\n";
-                    exit (EXIT_FAILURE);
-                    break;
-                default :
-                    cout << "Unknown error\n";
-                    exit (EXIT_FAILURE);
-                    break;
-            }
-        }
+        row = info[1]-'0';
+        col = info[0]-'a'+1;
     }
     Field(int colx, int rowx) {
         col = colx;
         row = rowx;
-        try {
-            if (row < 1 || row > 8 || col < 1 || col > 8) {
-                throw 5;
-            }
-        }
-        catch (int i) {
-            switch(i) {
-                case 5 :
-                    cout << "Invalid Field\n";
-                    exit (EXIT_FAILURE);
-            }
-        }
     }
     string position() {
         char column = 'a'+col-1;
@@ -87,6 +44,9 @@ class Field {
     }
     int rank() {
         return 2 * min(col, 9-col)  * min(row, 9-row);
+    }
+    bool isValidField() {
+        return 1 <= row && row <= 8 && 1 <= col && col <= 8;
     }
 };
 
