@@ -51,18 +51,11 @@ class Game {
             }
             return colorRank - otherColorRank;
         }
-        Game updateGame(Move move){
-            Game newgame;
-            Board newBoard = *board;
-            updateBoard(&newBoard, move);
-            figurecolor newcolor = other(color);
-            gamestatus newstatus = status;
-            return Game(&newBoard, move, newcolor, newstatus);
-        }
-        vector<Game*> nextGames();
+        Game updateGame(Move move);
+        vector<Game> nextGames();
 };
 
-vector<Move> getGames(Board* board, Field field, figuretype type, figurecolor color){
+vector<Move> getGames(Board* board, const Field field, figuretype type, figurecolor color){
     figurecolor gameColor = other(color);
     vector<Move> movesList;
     vector <pair<int, int> > incrList;
@@ -163,8 +156,16 @@ vector<Move> getGames(Board* board, Field field, figuretype type, figurecolor co
     return movesList;
 }
 
-vector<Game*> Game::nextGames(){
-    vector<Game*> nextgames;
+Game Game::updateGame(Move move){
+    Game newgame;
+    Board newBoard = *board;
+    updateBoard(&newBoard, move);
+    // showBoard(&newBoard);
+    return Game(&newBoard, move, other(color), status);
+}
+
+vector<Game> Game::nextGames(){
+    vector<Game> nextgames;
     vector<Move> nextmoves;
     for (auto it = board->begin(); it != board->end(); it++){
         if(it->second.getColor() == color){
@@ -174,7 +175,7 @@ vector<Game*> Game::nextGames(){
             nextmoves = getGames(board, field, type, color);
             for (int i = 0; i<nextmoves.size(); i++){
                 updatedgame = this->updateGame(nextmoves[i]);
-                nextgames.push_back(&updatedgame);
+                nextgames.push_back(updatedgame);
             }
         }
     }

@@ -1,6 +1,7 @@
 #ifndef _BOARD_H_INCLUDED_
 #define _BOARD_H_INCLUDED_
 
+#include <iostream>
 #include "figure.h"
 #include "move.h"
 #include "field.h"
@@ -87,7 +88,7 @@ bool isValidMove(Move move, Board* board) {
 void showBoard(Board* board){
     cout << endl;
     cout << "\t\t";
-    for (int i = 0; i<8; i++){
+    for (int i = 0; i < 8; i++){
         cout << (char)('a'+i) << "\t";
     }
     cout << "\n\n";
@@ -105,7 +106,7 @@ void showBoard(Board* board){
         cout << "\n\n";
     }
     cout << "\t\t";
-    for (int i = 0; i<8; i++){
+    for (int i = 0; i < 8; i++){
         cout << (char)('a'+i) << "\t";
     }
     cout << "\n\n";
