@@ -20,8 +20,9 @@ int main() {
         if (str == "y") capture = true;
         else capture = false;
         Game nextgame = game.updateGame(Move(fieldf, fieldt, capture));
+        cout << nextgame.getColor() << endl;
         showBoard(nextgame.getBoard());
-        game = game.bestGame();
+        game = nextgame.bestGame();
         showBoard(game.getBoard());
     }
     return 0;
