@@ -2,6 +2,8 @@
 #define _BOARD_H_INCLUDED_
 
 #include <iostream>
+using namespace std;
+#include <vector>
 #include "figure.h"
 #include "move.h"
 #include "field.h"
@@ -91,8 +93,8 @@ void showBoard(Board* board){
     for (int i = 0; i < 8; i++){
         cout << (char)('a'+i) << "\t";
     }
-    cout << "\n\n";
-    for (int row = 8; row>0; row--){
+    cout << endl << endl;
+    for (int row = 8; row > 0; row--){
         cout << "\t" << row << "\t";
         for (int col = 1; col<9; col++){
             auto it = board->find(Field(col, row));
@@ -103,13 +105,13 @@ void showBoard(Board* board){
             }
         }
         cout << row;
-        cout << "\n\n";
+        cout << endl << endl;
     }
     cout << "\t\t";
     for (int i = 0; i < 8; i++){
         cout << (char)('a'+i) << "\t";
     }
-    cout << "\n\n";
+    cout << endl << endl;
     return;
 }
 
@@ -124,6 +126,107 @@ void updateBoard(Board* board, Move move) {
         board->erase(it);
     }
     return;
+}
+
+vector<Move> getGames(Board* board, const Field field, figuretype type, figurecolor color){
+    figurecolor gameColor = other(color);
+    vector<Move> movesList;
+    vector <pair<int, int> > incrList;
+    switch (type)
+    {
+        case 'r' :{
+            incrList = {make_pair(1,0), make_pair(-1,0), make_pair(0,1), make_pair(0,-1)};
+            for (int i = 0; i<incrList.size(); i++){
+                int col_inc = incrList[i].first, row_inc = incrList[i].second; 
+                Field temp = Field(field.col + col_inc, field.row + row_inc);
+                while(temp.isValidField() && board->find(temp) == board->end()){
+                    movesList.push_back(Move(field, temp, false));
+                    temp.row = temp.row + row_inc;
+                    temp.col = temp.col + col_inc;
+                }
+                if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)) {
+                    movesList.push_back(Move(field, temp, true));
+                }
+            }
+            break;
+        }
+        case 'b' :{
+            incrList = {make_pair(1,1), make_pair(-1,-1), make_pair(1,-1), make_pair(-1, 1)};
+            for (int i = 0; i<incrList.size(); i++){
+                int col_inc = incrList[i].first, row_inc = incrList[i].second; 
+                Field temp = Field(field.col + col_inc, field.row + row_inc);
+                while(temp.isValidField() && board->find(temp) == board->end()){
+                    movesList.push_back(Move(field, temp, false));
+                    temp.row = temp.row + row_inc;
+                    temp.col = temp.col + col_inc;
+                }
+                if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)) {
+                    movesList.push_back(Move(field, temp, true));
+                }
+            }
+            break;
+        }
+        case 'q' :{
+            incrList = {make_pair(1,0), make_pair(-1,0), make_pair(0,1), make_pair(0,-1), make_pair(1,1), make_pair(-1,-1), make_pair(1,-1), make_pair(-1, 1)};
+            for (int i = 0; i<incrList.size(); i++){
+                int col_inc = incrList[i].first, row_inc = incrList[i].second; 
+                Field temp = Field(field.col + col_inc, field.row + row_inc);
+                while(temp.isValidField() && board->find(temp) == board->end()){
+                    movesList.push_back(Move(field, temp, false));
+                    temp.row = temp.row + row_inc;
+                    temp.col = temp.col + col_inc;
+                }
+                if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)) {
+                    movesList.push_back(Move(field, temp, true));
+                }
+            }
+            break;
+        }
+        case 'k' :{
+            incrList = {make_pair(1,0), make_pair(-1,0), make_pair(0,1), make_pair(0,-1), make_pair(1,1), make_pair(-1,-1), make_pair(1,-1), make_pair(-1, 1)};
+            for (int i = 0; i<incrList.size(); i++) {
+                int col_inc = incrList[i].first, row_inc = incrList[i].second;
+                Field temp = Field(field.col + col_inc, field.row + row_inc);
+                if (temp.isValidField() && board->find(temp) == board->end()){
+                    movesList.push_back(Move(field, temp, false));
+                } else if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)){
+                    movesList.push_back(Move(field, temp, true));
+                } else{
+                }
+            }
+            break;
+        }
+        case 'p' :{
+            int dir = 1;
+            if (color == 'b') dir = -1;
+            Field temp = Field(field.col + 0, field.row + dir);
+            if (temp.isValidField() && board->find(temp) == board->end()) movesList.push_back(Move(field, temp, false));
+            incrList = {make_pair(1,dir), make_pair(-1,dir)};
+            for (int i = 0; i<incrList.size(); i++){
+                int col_inc = incrList[i].first, row_inc = incrList[i].second;
+                temp = Field(field.col+col_inc, field.row+row_inc);
+                if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)){
+                    movesList.push_back(Move(field, temp, true));
+                }
+            }
+            break;
+        }
+        default :{
+            incrList = {make_pair(2,1), make_pair(2,-1), make_pair(-2,1), make_pair(-2,-1), make_pair(1,2), make_pair(1,-2), make_pair(-1,2), make_pair(-1,-2)};
+            for (int i = 0; i<incrList.size(); i++){
+                int col_inc = incrList[i].first, row_inc = incrList[i].second;
+                Field temp = Field(field.col + col_inc, field.row + row_inc);
+                if (temp.isValidField() && board->find(temp) == board->end()){
+                    movesList.push_back(Move(field, temp, false));
+                } else if (temp.isValidField() && board->find(temp) != board->end() && board->find(temp)->second.getColor() == other(color)){
+                    movesList.push_back(Move(field, temp, true));
+                } else{
+                }
+            }
+            break;
+        }
+    }
+    return movesList;
 }
 
 #endif
