@@ -17,6 +17,10 @@
         "locale": "cpp",
         "random": "cpp",
         "ostream": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "ios": "cpp",
+        "memory": "cpp",
+        "type_traits": "cpp",
+        "*.tcc": "cpp"
     }
 }

@@ -6,22 +6,18 @@
 
 class Tree {
     public :
-    Game root;
+    Game* root;
     vector<Tree*> children;
     Tree() {}
 };
 
-Tree* makeTree(Game game, int depth){
+Tree* makeTree(Game* game, int depth){
     Tree* gametree = new Tree;
     gametree->root = game;  
-    vector<Game> nextgames = game.nextGames();
-    if (nextgames.size() == 0){
+    vector<Game*> nextgames = game->nextGames();
+    if (nextgames.size() == 0 || depth == 0){
         gametree->children = {NULL};
         return gametree;
-    }
-    if (depth == 0){
-        gametree->children = {NULL};
-        return NULL;
     }
     vector<Tree*> childvect;
     for (int i = 0; i<nextgames.size(); i++){
