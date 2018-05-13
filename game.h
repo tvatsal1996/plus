@@ -68,7 +68,9 @@ int Game::rank() {
             otherColorRank += fieldRank(it->first);
         }
     }
-    return colorRank - otherColorRank;
+    int finalRank = colorRank - otherColorRank;
+    
+    return finalRank;
 }
 
 Game* Game::updateGame(Move move){

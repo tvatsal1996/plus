@@ -2,7 +2,7 @@
 using namespace std;
 // #include <map>
 #include "game.h"
-// #include "gametree.h"
+#include "gametree.h"
 
 int main() {
     Game* game = new Game; 
