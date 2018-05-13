@@ -1,19 +1,31 @@
 #include <iostream>
 using namespace std;
+// #include <map>
 #include "game.h"
+// #include "gametree.h"
 
 int main() {
-    Game game(&chessBoard, Move(Field("a2"), Field("a3"), false), 'w', "Just started");
-    // Game newgame = game.updateGame(Move(Field("a2"), Field("a3"), false));
-    // showBoard(newgame.getBoard());
-    // for (auto it = newgame.getBoard()->begin(); it != newgame.getBoard()->end(); it++){
-    //     cout << "Field = (" << it->first.col << ", " << it->first.row << ") ";
-    //     cout << "Figure = " << it->second.getType() << " " << it->second.getColor();
-    //     cout << endl;
-    // }
-    vector<Game> nextgames = game.nextGames();
-    for(int i = 0; i<nextgames.size(); i++){
-        showBoard(nextgames[i].getBoard());
+    Game* game = new Game; 
+    *game = Game(&chessBoard, Move(Field("a2"), Field("a3"), false), 'w', "Just started");
+    showBoard(game->getBoard());
+    string str;
+    while(1){
+        cout << "Enter source field : ";
+        cin >> str;
+        Field fieldf = Field(str);
+        cout << "Enter destination field : ";
+        cin >> str;
+        Field fieldt = Field(str);
+        cout << "Is it a capture move : ";
+        cin >> str;
+        bool capture;
+        if (str == "y") capture = true;
+        else capture = false;
+        Game* nextgame = game->updateGame(Move(fieldf, fieldt, capture));
+        cout << nextgame->getColor() << endl;
+        showBoard(nextgame->getBoard());
+        game = nextgame->bestGame();
+        showBoard(game->getBoard());
     }
     return 0;
 }

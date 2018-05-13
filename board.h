@@ -133,7 +133,7 @@ Board* updateBoard(Board* board, Move move) {
     return newboard;
 }
 
-vector<Move> getGames(Board* board, const Field field, figuretype type, figurecolor color){
+vector<Move> getMoves(Board* board, const Field field, figuretype type, figurecolor color){
     figurecolor gameColor = other(color);
     vector<Move> movesList;
     vector <pair<int, int> > incrList;
