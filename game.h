@@ -31,6 +31,7 @@ class Game {
 };
 
 Board* Game::getBoard() {
+    showBoard(board);
     return board;
 }
 
@@ -70,11 +71,11 @@ int Game::rank() {
 }
 
 Game Game::updateGame(Move move){
-    Game newgame;
     Board newBoard = *board;
     updateBoard(&newBoard, move);
-    // showBoard(&newBoard);
-    return Game(&newBoard, move, other(color), status);
+    showBoard(&newBoard);
+    Game newgame = Game(&newBoard, move, other(color), status);
+    return newgame;
 }
 
 vector<Game> Game::nextGames(){
