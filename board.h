@@ -115,17 +115,22 @@ void showBoard(Board* board){
     return;
 }
 
-void updateBoard(Board* board, Move move) {
+Board* updateBoard(Board* board, Move move) {
+    Board* newboard = new Board;
     if (!isValidMove(move, board)){
+        return board;
     } else {
-        auto it = board->find(move.from);
-        if (board->find(move.to) != board->end()){
-            board->erase(board->find(move.to));
+        for(auto it = board->begin(); it != board->end(); it++){
+            newboard->insert(pair <Field, Figure> (it->first, it->second));
         }
-        board->insert(pair <Field, Figure> (move.to, it->second));
-        board->erase(it);
+        auto it = newboard->find(move.from);
+        if (newboard->find(move.to) != newboard->end()){
+            newboard->erase(newboard->find(move.to));
+        }
+        newboard->insert(pair <Field, Figure> (move.to, it->second));
+        newboard->erase(it);
     }
-    return;
+    return newboard;
 }
 
 vector<Move> getGames(Board* board, const Field field, figuretype type, figurecolor color){

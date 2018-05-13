@@ -31,7 +31,7 @@ class Game {
 };
 
 Board* Game::getBoard() {
-    showBoard(board);
+    // showBoard(board);
     return board;
 }
 
@@ -71,10 +71,7 @@ int Game::rank() {
 }
 
 Game Game::updateGame(Move move){
-    Board newBoard = *board;
-    updateBoard(&newBoard, move);
-    showBoard(&newBoard);
-    Game newgame = Game(&newBoard, move, other(color), status);
+    Game newgame = Game(updateBoard(board, move), move, other(color), status);
     return newgame;
 }
 
